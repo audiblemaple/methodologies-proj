@@ -19,22 +19,24 @@ public class TestThreadCheckArray {
 
 			thread1 = new Thread(new ThreadCheckArray(sd), "thread1");
 			thread2 = new Thread(new ThreadCheckArray(sd), "thread2");
-			long startTime1 = System.currentTimeMillis();
+			long startTime1 = System.nanoTime();
 			thread1.start();
-			long startTime2 = System.currentTimeMillis();
+			long startTime2 = System.nanoTime();
 			thread2.start();
 			long endTime1 = 0;
 			long endTime2 = 0;
 			try {
 				thread1.join();
-				endTime1 = System.currentTimeMillis();
+				endTime1 = System.nanoTime();
 				thread2.join();
-				endTime2 = System.currentTimeMillis();
+				endTime2 = System.nanoTime();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			if (!sd.getFlag()) {
 				System.out.println("Sorry");
+				System.out.println("\nTime for T1: " + (endTime1 - startTime1));
+				System.out.println("\nTime for T2: " + (endTime2 - startTime2));
 				return;
 			}
 			System.out.println("Solution for b : " + sd.getB() + ",n = " + sd.getArray().length);
@@ -65,8 +67,14 @@ public class TestThreadCheckArray {
 					System.out.print("0    ");
 			}
 
-			System.out.println("Time for T1: " + (endTime1 - startTime1));
-			System.out.println("Time for T2: " + (endTime2 - startTime2));
+			System.out.println("\nTime for T1: " + (endTime1 - startTime1));
+			System.out.println("\nTime for T2: " + (endTime2 - startTime2));
+
+			if ((endTime1 - startTime1) > (endTime2 - startTime2)){
+				System.out.println("thread 2 wins");
+				return;
+			}
+			System.out.println("thread 1 wins");
 		}
 	}
 }
