@@ -5,48 +5,48 @@ public class TestThreadCheckArray {
 		try (Scanner input = new Scanner(System.in)) {
 			Thread thread1, thread2;
 			System.out.println("Enter array size");
-			int num  = input.nextInt();
-			int [] array = new int[num];
+			int num = input.nextInt();
+			int[] array = new int[num];
 			System.out.println("Enter numbers for array");
-			
-			for (int index = 0; index < num; index++) 
+
+			for (int index = 0; index < num; index++)
 				array[index] = input.nextInt();
-			
+
 			System.out.println("Enter number");
 			num = input.nextInt();
-			
+
 			SharedData sd = new SharedData(array, num);
-			
+
 			thread1 = new Thread(new ThreadCheckArray(sd), "thread1");
 			thread2 = new Thread(new ThreadCheckArray(sd), "thread2");
+			long startTime1 = System.currentTimeMillis();
 			thread1.start();
+			long startTime2 = System.currentTimeMillis();
 			thread2.start();
-			try 
-			{
+			long endTime1 = 0;
+			long endTime2 = 0;
+			try {
 				thread1.join();
+				endTime1 = System.currentTimeMillis();
 				thread2.join();
-			} 
-			catch (InterruptedException e)
-			{
+				endTime2 = System.currentTimeMillis();
+			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			if (!sd.getFlag())
-			{
+			if (!sd.getFlag()) {
 				System.out.println("Sorry");
 				return;
 			}
 			System.out.println("Solution for b : " + sd.getB() + ",n = " + sd.getArray().length);
 			System.out.print("I:    ");
-			for(int index = 0; index < sd.getArray().length ; index++)
+			for (int index = 0; index < sd.getArray().length; index++)
 				System.out.print(index + "    ");
 			System.out.println();
 			System.out.print("A:    ");
-			for (int index : sd.getArray())
-			{
+			for (int index : sd.getArray()) {
 				System.out.print(index);
 				int counter = 5;
-				while (true)
-				{
+				while (true) {
 					index = index / 10;
 					counter--;
 					if (index == 0)
@@ -58,14 +58,15 @@ public class TestThreadCheckArray {
 
 			System.out.println();
 			System.out.print("C:    ");
-			for (boolean index : sd.getWinArray())
-			{
+			for (boolean index : sd.getWinArray()) {
 				if (index)
 					System.out.print("1    ");
 				else
-					System.out.print("0    ");	
+					System.out.print("0    ");
 			}
+
+			System.out.println("Time for T1: " + (endTime1 - startTime1));
+			System.out.println("Time for T2: " + (endTime2 - startTime2));
 		}
 	}
-
 }
